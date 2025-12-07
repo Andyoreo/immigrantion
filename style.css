@@ -1,0 +1,200 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #333; /* 模拟深色背景 */
+    color: #fff;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* 使内容居中 */
+}
+
+/* --- 顶部进度条/计时器 --- */
+.header {
+    width: 90%;
+    max-width: 1200px;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 0;
+}
+
+.progress-bar-container {
+    flex-grow: 1;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    margin-right: 20px;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #4CAF50; /* 绿色进度条 */
+    border-radius: 4px;
+    transition: width 0.3s;
+}
+
+.timer {
+    font-size: 1.2em;
+    color: #4CAF50;
+}
+
+/* --- 主要学习内容区域 --- */
+.study-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    max-width: 900px;
+    padding-bottom: 50px;
+}
+
+.sentence-card {
+    background: rgba(255, 255, 255, 0.05); /* 浅色背景卡片 */
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+.phonetics {
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    color: #aaa;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    user-select: none;
+}
+
+.phonetic {
+    margin: 0 10px;
+}
+
+.words {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+    line-height: 1.5;
+}
+
+.word-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 15px;
+    min-width: 60px; /* 保证单词之间有间距 */
+}
+
+.word {
+    font-size: 3em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.tag {
+    font-size: 0.8em;
+    padding: 2px 8px;
+    border-radius: 15px;
+    color: #000;
+    margin-bottom: 5px;
+}
+
+/* 词性颜色 */
+.verb { background-color: #4CAF50; }
+.pronoun { background-color: #FF9800; }
+.aux-verb { background-color: #2196F3; }
+.noun { background-color: #E91E63; }
+
+.meaning {
+    font-size: 0.9em;
+    color: #ccc;
+}
+
+.translation {
+    font-size: 1.5em;
+    color: #f1f1f1;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* --- 底部控制按钮 --- */
+.controls {
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.control-btn {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.control-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.control-label {
+    font-size: 0.8em;
+    color: #ccc;
+    margin-right: 20px;
+}
+
+/* 左右导航箭头 */
+.study-container::before, .study-container::after {
+    content: '<'; /* 箭头符号 */
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3em;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: color 0.2s;
+    user-select: none;
+}
+
+.study-container::before {
+    left: 5%;
+    content: '<';
+}
+
+.study-container::after {
+    right: 5%;
+    content: '>';
+}
+
+.study-container::before:hover, .study-container::after:hover {
+    color: #fff;
+}
+/* styles.css (添加在文件末尾) */
+
+.word-group {
+    /* 确保可点击 */
+    cursor: pointer; 
+    transition: transform 0.1s, background-color 0.2s;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.word-group.highlighted {
+    background-color: rgba(76, 175, 80, 0.2); /* 浅绿色背景 */
+    transform: scale(1.05);
+}
+
+.word-group:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
