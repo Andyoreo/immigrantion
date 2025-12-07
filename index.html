@@ -1,69 +1,1433 @@
 <!DOCTYPE html>
-<html lang="zh">
-    <script src="script.js"></script> 
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>语句学习 - 句乐部仿制</title>
-    <link rel="stylesheet" href="styles.css"> </head>
+    <title>Andy's Immigration Roadmap to Australia</title>
+    <!-- Use Inter font for better readability -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Markdown parser for AI responses -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4F46E5; /* Indigo */
+            --primary-light: #EEF2FF;
+            --secondary: #10B981; /* Emerald */
+            --secondary-light: #ECFDF5;
+            --warning: #F59E0B; /* Amber */
+            --warning-light: #FFFBEB;
+            --danger: #EF4444; /* Red */
+            --danger-light: #FEF2F2;
+            --dark: #1F2937;
+            --gray: #6B7280;
+            --light-gray: #F3F4F6;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius: 12px;
+            --ai-color: #8B5CF6; /* Violet for AI features */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F9FAFB;
+            color: var(--dark);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Legend --- */
+        .legend-bar {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+            background: white;
+            padding: 15px;
+            border-radius: 50px;
+            box-shadow: var(--shadow-sm);
+            max-width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* --- Header --- */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #4338CA 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-md);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.025em;
+        }
+
+        .subtitle {
+            opacity: 0.9;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- Flowchart Layout --- */
+        .flowchart-wrapper {
+            position: relative;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            padding: 40px;
+            overflow-x: auto;
+            margin-bottom: 50px;
+        }
+
+        /* Timeline Marker on the Left */
+        .timeline-rail {
+            position: absolute;
+            left: 20px;
+            top: 40px;
+            bottom: 40px;
+            width: 60px;
+            border-right: 2px dashed var(--light-gray);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-right: 15px;
+            color: var(--gray);
+            font-weight: 700;
+            font-size: 0.8rem;
+            z-index: 0;
+            display: none;
+        }
+
+        @media(min-width: 1024px) {
+            .timeline-rail { display: flex; }
+            .flowchart-wrapper { padding-left: 100px; }
+        }
+
+        /* The Tree Structure */
+        .tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            min-width: 800px;
+        }
+
+        .connector {
+            width: 2px;
+            height: 30px;
+            background-color: #CBD5E1;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .connector::after {
+            content: '▼';
+            color: #CBD5E1;
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+        }
+
+        /* Branches */
+        .branch-group {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            position: relative;
+            gap: 40px;
+            padding-top: 20px;
+        }
+
+        .branch-group::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 25%;
+            right: 25%;
+            height: 2px;
+            background-color: #CBD5E1;
+            z-index: 1;
+        }
+        
+        .branch-group.wide::before { left: 20%; right: 20%; }
+
+        .branch-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .branch-column::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            width: 2px;
+            height: 20px;
+            background-color: #CBD5E1;
+        }
+
+        /* Labels for paths */
+        .path-label {
+            background: var(--light-gray);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--gray);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .path-label.primary { background: var(--primary-light); color: var(--primary); }
+        .path-label.secondary { background: var(--warning-light); color: var(--warning); border: 1px solid var(--warning); }
+        .path-label.success { background: var(--secondary-light); color: var(--secondary); }
+        .path-label.danger { background: var(--danger-light); color: var(--danger); }
+
+        /* --- Nodes --- */
+        .node {
+            background: white;
+            border: 2px solid transparent;
+            border-radius: var(--radius);
+            padding: 16px;
+            width: 320px;
+            position: relative;
+            text-align: left;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            z-index: 2;
+            margin-bottom: 0;
+        }
+
+        .node:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Node Types */
+        .node.start {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            border: none;
+        }
+
+        .node.info {
+            border-color: #E0E7FF;
+            border-left: 4px solid var(--primary);
+        }
+
+        .node.decision {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            text-align: center;
+            border-radius: 30px;
+            width: 280px;
+        }
+
+        .node.success {
+            background: var(--secondary-light);
+            border: 2px solid var(--secondary);
+            color: #065F46;
+            text-align: center;
+        }
+
+        .node.warning {
+            background: var(--danger-light);
+            border: 2px solid var(--danger);
+            color: #991B1B;
+        }
+
+        /* Node Content */
+        .node-year {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: rgba(0,0,0,0.05);
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+        .node.start .node-year { background: rgba(255,255,255,0.2); }
+
+        .node-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .node-desc {
+            font-size: 0.85rem;
+            color: inherit;
+            opacity: 0.9;
+        }
+
+        /* Visa Badge */
+        .visa-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: white;
+            background: var(--dark);
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+        .visa-482 { background-color: #0EA5E9; }
+        .visa-186 { background-color: #10B981; }
+        .visa-491 { background-color: #F59E0B; }
+        .visa-191 { background-color: #8B5CF6; }
+
+        /* Requirements Box (Collapsible) */
+        .req-box {
+            margin-top: 12px;
+            background: #F8FAFC;
+            border-radius: 8px;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.4s ease;
+            border: 1px solid #E2E8F0;
+        }
+        
+        .req-box.open {
+            max-height: 500px;
+        }
+
+        .req-content {
+            padding: 12px;
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .req-list {
+            list-style: none;
+            margin-top: 5px;
+        }
+        
+        .req-list li {
+            margin-bottom: 6px;
+            padding-left: 16px;
+            position: relative;
+        }
+        
+        .req-list li::before {
+            content: '•';
+            color: var(--primary);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .toggle-hint {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 8px;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            opacity: 0.8;
+        }
+        
+        .toggle-hint:hover { opacity: 1; text-decoration: underline; }
+
+        /* Important Note Styling */
+        .important-note {
+            margin-top: 20px;
+            background: linear-gradient(135deg, #FFF3CD 0%, #FFE69C 100%);
+            border: 3px solid #F59E0B;
+            border-left: 6px solid #F59E0B;
+            border-radius: 12px;
+            padding: 16px 20px;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            max-width: 500px;
+            position: relative;
+            animation: pulse-border 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-border {
+            0%, 100% {
+                box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            }
+            50% {
+                box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+            }
+        }
+
+        .note-header {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #92400E;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .note-content {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: #78350F;
+            font-weight: 500;
+            text-align: left;
+        }
+
+        /* 箭头连接线 */
+        .arrow-down {
+            text-align: center;
+            margin: 2px 0;
+            height: 14px;
+            position: relative;
+        }
+
+        .arrow-down::after {
+            content: '';
+            display: block;
+            width: 2px;
+            height: 12px;
+            background: #667eea;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .arrow-down::before {
+            content: '▼';
+            position: absolute;
+            left: 50%;
+            top: 10px;
+            transform: translateX(-50%);
+            color: #667eea;
+            font-size: 8px;
+        }
+
+        /* 分支容器 */
+        .branch-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 15px;
+            margin: 8px 0;
+            flex-wrap: nowrap;
+            position: relative;
+            width: 100%;
+        }
+
+        .branch {
+            flex: 1;
+            min-width: 280px;
+            max-width: 50%;
+            position: relative;
+        }
+
+        .branch-label {
+            text-align: center;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 0.75em;
+        }
+
+        .arrow-label {
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7em;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .arrow-label.yes {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .arrow-label.no {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .branch-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 水平分支（左右并列） */
+        .branch-horizontal {
+            display: flex;
+            gap: 15px;
+            margin: 8px 0;
+            justify-content: center;
+            flex-wrap: nowrap;
+            width: 100%;
+        }
+
+        .branch-horizontal .branch {
+            flex: 1;
+            min-width: 250px;
+            max-width: 50%;
+        }
+
+        /* 签证卡片区域 */
+        .visa-cards-section {
+            margin-top: 20px;
+        }
+
+        .visa-cards-title {
+            text-align: center;
+            color: #000000;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .visa-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .visa-card {
+            background: white;
+            border-radius: 16px;
+            padding: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .visa-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        }
+
+        .visa-card-image {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: block;
+            overflow: hidden;
+        }
+
+        .visa-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .visa-card:hover .visa-card-image img {
+            transform: scale(1.05);
+        }
+
+        .visa-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .visa-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8e8e8;
+        }
+
+        .visa-card-number {
+            font-size: 1.5em;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 10px;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .visa-card-number.visa-407 {
+            background: #667eea;
+        }
+
+        .visa-card-number.visa-491 {
+            background: #dc3545;
+        }
+
+        .visa-card-number.visa-186 {
+            background: #28a745;
+        }
+
+        .visa-card-number.visa-191 {
+            background: #ff9800;
+        }
+
+        .visa-card-number.visa-482 {
+            background: #17a2b8;
+        }
+
+        .visa-card-name {
+            font-weight: 600;
+            font-size: 0.9em;
+            color: #333;
+        }
+
+        .visa-card-type {
+            font-size: 0.75em;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .visa-card-section {
+            margin: 10px 0;
+        }
+
+        .visa-card-section-title {
+            font-weight: 700;
+            font-size: 0.75em;
+            color: #667eea;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .visa-card-content {
+            font-size: 0.75em;
+            line-height: 1.5;
+            color: #555;
+        }
+
+        /* 标签化内容 */
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 6px 0;
+        }
+
+        .content-tag {
+            display: inline-block;
+            background: #f0f4ff;
+            color: #667eea;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.7em;
+            font-weight: 500;
+            border: 1px solid #e0e8ff;
+            transition: all 0.2s ease;
+        }
+
+        .content-tag:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .content-tag.highlight {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .visa-card-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 6px 0;
+        }
+
+        .visa-card-list li {
+            padding-left: 18px;
+            position: relative;
+            margin: 4px 0;
+            font-size: 0.7em;
+            line-height: 1.4;
+        }
+
+        .visa-card-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .visa-card-table {
+            width: 100%;
+            font-size: 0.7em;
+            border-collapse: collapse;
+            margin: 5px 0;
+        }
+
+        .visa-card-table td {
+            padding: 4px 6px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .visa-card-table td:first-child {
+            font-weight: 600;
+            background: #f8f9fa;
+            width: 40%;
+        }
+
+        .visa-pr-badge {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
+        .visa-no-pr {
+            display: inline-block;
+            background: #dc3545;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
+        /* 图例 */
+        .legend {
+            background: white;
+            border-radius: 6px;
+            padding: 10px;
+            margin-top: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .legend-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #667eea;
+            font-size: 0.8em;
+        }
+
+        .legend-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.7em;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            border: 2px solid #333;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1400px) {
+            .branch-container, .branch-horizontal {
+                gap: 10px;
+            }
+
+            .branch {
+                min-width: 240px;
+            }
+
+            .node {
+                max-width: 320px;
+                font-size: 0.7em;
+            }
+        }
+
+        @media (max-width: 968px) {
+            .branch-container, .branch-horizontal {
+                flex-direction: column;
+                flex-wrap: wrap;
+            }
+
+            .branch {
+                min-width: 100%;
+                max-width: 100%;
+            }
+
+            .branch-horizontal .branch {
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.4em;
+            }
+
+            .flowchart {
+                padding: 10px;
+            }
+
+            .node {
+                padding: 5px 8px;
+                font-size: 0.7em;
+                max-width: 100%;
+            }
+
+            .requirements-box {
+                max-width: 100%;
+                padding: 6px;
+            }
+
+            .visa-cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .visa-cards-title {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
 <body>
 
-    <div class="header">
-        <div class="progress-bar-container">
-            <div class="progress-bar" style="width: 70%;"></div>
+    <header>
+        <div class="container">
+            <h1>Andy's Immigration Roadmap</h1>
+            <p class="subtitle">A strategic timeline for Permanent Residency in Australia (2026-2031)</p>
         </div>
-        <div class="timer">00:03:03</div>
-    </div>
+    </header>
 
-    <div class="study-container">
-        <div class="sentence-card">
-            <div class="phonetics">
-                <span class="phonetic">/ɪkˈskjuːs/</span>
-                <span class="phonetic">/miː/</span>
-                <span class="phonetic">/duː/</span>
-                <span class="phonetic">/juː/</span>
-                <span class="phonetic">/hæv/</span>
-                <span class="phonetic">/ðɪs/</span>
-                <span class="phonetic">/ʃɜːt/</span>
+    <main class="container">
+        
+        <!-- Legend -->
+        <div class="legend-bar">
+            <div class="legend-item">
+                <div class="dot" style="background: var(--primary);"></div> Start/Info
+            </div>
+            <div class="legend-item">
+                <div class="dot" style="background: #FCD34D;"></div> Decision Point
+            </div>
+            <div class="legend-item">
+                <div class="dot" style="background: var(--secondary);"></div> Success (PR)
+            </div>
+            <div class="legend-item">
+                <div class="dot" style="background: var(--danger);"></div> High Risk
+            </div>
+        </div>
+
+        <section class="flowchart-wrapper">
+            <!-- Left Side Timeline Rail -->
+            <div class="timeline-rail">
+                <span>2026</span>
+                <span>2027</span>
+                <span>2028</span>
+                <span>2029</span>
+                <span>2030</span>
+                <span>2031</span>
             </div>
 
-            <div class="words">
-                <div class="word-group">
-                    <div class="word">Excuse</div>
-                    <div class="tag verb">动词</div>
-                    <div class="meaning">原谅</div>
+            <div class="tree">
+                <!-- STEP 1: START - Student Visa 500 -->
+                <div class="node start" onclick="toggleDetails('start-details')">
+                    <span class="node-year">2025-2026</span>
+                    <span class="node-title">🎓 Student Visa 500</span>
+                    <span class="node-desc">Study in Australia: Work limit 48 hours/2 weeks</span>
+                    <div class="toggle-hint">Click for details</div>
+                    <div id="start-details" class="req-box">
+                        <div class="req-content">
+                            <strong>Student Visa 500 Restrictions:</strong>
+                            <ul class="req-list">
+                                <li>Work limit: Maximum 48 hours per 2 weeks</li>
+                                <li>Cannot work full-time while on student visa</li>
+                                <li>To work full-time: Need employer + training plan → Apply for 407</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="word-group">
-                    <div class="word">me</div>
-                    <div class="tag pronoun">代词</div>
-                    <div class="meaning">我</div>
+
+                <div class="connector"></div>
+
+                <!-- STEP 2: Find Employer & Training Plan -->
+                <div class="node info">
+                    <span class="node-year">2026</span>
+                    <span class="node-title">💼 Find Employer + Training Plan</span>
+                    <span class="node-desc">Employer provides structured training plan for 407 application</span>
                 </div>
-                <div class="word-group">
-                    <div class="word">do</div>
-                    <div class="tag aux-verb">助动词</div>
-                    <div class="meaning">构成疑问句</div>
+
+                <div class="connector"></div>
+
+                <!-- STEP 3: Apply for 407 -->
+                <div class="node info" onclick="toggleDetails('details-407')">
+                    <span class="node-year">2026</span>
+                    <span class="node-title">📋 Apply for 407 Training Visa</span>
+                    <span class="node-desc">Full-time work allowed: Learn & work at company</span>
+                    <div class="toggle-hint">View Requirements</div>
+                    <div id="details-407" class="req-box">
+                        <div class="req-content">
+                            <strong>Why 407?</strong>
+                            <ul class="req-list">
+                                <li>Low English requirement (Functional)</li>
+                                <li>Allows full-time work for designated employer</li>
+                                <li>Builds the 2-year experience gap needed for 482</li>
+                                <li>Transition from student visa work restrictions</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="word-group">
-                    <div class="word">shirt</div>
-                    <div class="tag noun">名词</div>
-                    <div class="meaning">衬衫</div>
+
+                <div class="connector"></div>
+
+                <!-- STEP 4: RPL -->
+                <div class="node info">
+                    <span class="node-year">2026 (Late)</span>
+                    <span class="node-title">📜 Obtain RPL Certificate</span>
+                    <span class="node-desc">Recognition of Prior Learning to formalize skills</span>
+                </div>
+
+                <div class="connector"></div>
+
+                <!-- STEP 5: DECISION -->
+                <div class="node decision">
+                    <span class="node-title">❓ Employer Sponsorship?</span>
+                    <span class="node-desc">Is the current employer willing to sponsor 482?</span>
+                </div>
+
+                <!-- 分支容器 -->
+                <div class="branch-container">
+                    <!-- PLAN A: MAIN PATH -->
+                    <div class="branch-column">
+                        <div class="path-label primary">Plan A: Primary Applicant Path</div>
+                        <div class="connector"></div>
+                        
+                        <!-- 482 Node -->
+                        <div class="node info" onclick="toggleDetails('details-482')">
+                            <span class="node-year">2026-2028</span>
+                            <span class="node-title">Apply for 482 Visa <span class="visa-badge visa-482">TSS</span></span>
+                            <span class="node-desc">Work full-time for 2 years</span>
+                            <div class="toggle-hint">View Requirements</div>
+                            <div id="details-482" class="req-box">
+                                <div class="req-content">
+                                    <strong>Requirements:</strong>
+                                    <ul class="req-list">
+                                        <li>2 years full-time experience (gained via 407)</li>
+                                        <li>PTE 50 (each band)</li>
+                                        <li>Employer nomination approved</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="connector"></div>
+
+                        <!-- 186 Node -->
+                        <div class="node info" onclick="toggleDetails('details-186')">
+                            <span class="node-year">2030-2031</span>
+                            <span class="node-title">Apply for 186 TRT <span class="visa-badge visa-186">PR</span></span>
+                            <span class="node-desc">Transition to Permanent Residency</span>
+                            <div class="toggle-hint">View Requirements</div>
+                            <div id="details-186" class="req-box">
+                                <div class="req-content">
+                                    <strong>186 TRT Requirements:</strong>
+                                    <ul class="req-list">
+                                        <li>Worked 2 years on 482 for same employer</li>
+                                        <li>Age < 45</li>
+                                        <li>Competent English (PTE 50)</li>
+                                        <li><strong>Outcome:</strong> Direct PR for whole family</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="connector"></div>
+
+                        <div class="node success">
+                            <span class="node-year">2031</span>
+                            <span class="node-title">🏆 Permanent Residency</span>
+                            <span class="node-desc">🎉 Mission Accomplished via Employer Sponsor</span>
+                        </div>
+                        
+                        <!-- Important Note -->
+                        <div class="important-note">
+                            <div class="note-header">⚠️ Important Note</div>
+                            <div class="note-content">
+                                Some employers highly value your work, have the authority, the qualifications, and are willing to vouch for you. The anxiety will disappear by 2026. Without such employer guarantee, you will have to endure at least three more years of anxiety. The Sword of Damocles is always hanging here. The only thing you can do is to work hard, and leave the rest to luck.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PLAN B: SPOUSE PATH -->
+                    <div class="branch-column">
+                        <div class="path-label secondary">Plan B: Spouse Strategy</div>
+                        <div class="connector"></div>
+
+                        <div class="node info">
+                            <span class="node-year">Oct 2027</span>
+                            <span class="node-title">👫 Spouse gets 485 Visa</span>
+                            <span class="node-desc">✅ Open work rights. Spouse becomes main applicant.</span>
+                        </div>
+
+                        <div class="connector"></div>
+
+                        <div class="node decision" style="width: 240px; font-size: 0.9em;">
+                            ❓ Can Spouse get 491?
+                        </div>
+
+                        <div class="branch-group">
+                            <!-- Spouse Plan B1: 491 -->
+                            <div class="branch-column">
+                                <div class="path-label success">Yes</div>
+                                <div class="connector"></div>
+                                
+                                <div class="node info" onclick="toggleDetails('details-491')">
+                                    <span class="node-year">2028</span>
+                                    <span class="node-title">📝 Spouse 491 Visa <span class="visa-badge visa-491">Regional</span></span>
+                                    <span class="node-desc">🏛️ State Nomination</span>
+                                    <div class="toggle-hint">Details</div>
+                                    <div id="details-491" class="req-box">
+                                        <div class="req-content">
+                                            <ul class="req-list">
+                                                <li>Skills Assessment Required</li>
+                                                <li>Points Test (65+)</li>
+                                                <li>Must live in Regional Area</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="connector"></div>
+
+                                <div class="node success">
+                                    <span class="node-year">2031</span>
+                                    <span class="node-title">🏆 191 PR Visa <span class="visa-badge visa-191">PR</span></span>
+                                    <span class="node-desc">🎉 After 3 years regional living</span>
+                                </div>
+                            </div>
+
+                            <!-- Spouse Plan B2: Risk -->
+                            <div class="branch-column">
+                                <div class="path-label danger">No</div>
+                                <div class="connector"></div>
+                                
+                                <div class="node warning">
+                                    <span class="node-year">⚠️ Risk</span>
+                                    <span class="node-title">🔍 Find Spouse Sponsor</span>
+                                    <span class="node-desc">⏰ Must find 482 employer for spouse immediately</span>
+                                </div>
+
+                                <div class="connector"></div>
+
+                                <div class="node warning" style="background: #FEF2F2; border-color: #EF4444;">
+                                    <span class="node-year">Failure</span>
+                                    <span class="node-title">😢 Return Home</span>
+                                    <span class="node-desc">💔 If 485 expires without path</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-            
-            <div class="translation">请问, 这件衬衫有货吗</div>
         </div>
 
-        <div class="controls">
-            <button class="control-btn">Ctrl + '</button>
-            <span class="control-label">播放发音</span>
-            
-            <button class="control-btn">Ctrl + M</button>
-            <span class="control-label">掌握</span>
+        <!-- 图例 -->
+        <div class="legend">
+            <div class="legend-title">Legend</div>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                    <span>Start Node</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #fff3cd; border-color: #ffc107;"></div>
+                    <span>Decision Node</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #d4edda; border-color: #28a745;"></div>
+                    <span>Success Result</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #f8d7da; border-color: #dc3545;"></div>
+                    <span>Warning/Risk</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #d1ecf1; border-color: #17a2b8;"></div>
+                    <span>Info Node</span>
+                </div>
+            </div>
+        </div>
 
-            <button class="control-btn">Enter</button>
-            <span class="control-label">下一题</span>
+        <!-- 签证卡片说明区域 -->
+        <div class="visa-cards-section">
+            <div class="visa-cards-title">📋 Visa Types Comparison</div>
+            <div class="visa-cards-grid">
+                <!-- 407卡片 -->
+                <div class="visa-card">
+                    <div class="visa-card-image">
+                        <img src="Gemini_Generated_Image_bv27d2bv27d2bv27.png" alt="407 Training Visa - Crossroads">
+                    </div>
+                    <div class="visa-card-header">
+                        <div class="visa-card-number visa-407">407</div>
+                        <div>
+                            <div class="visa-card-name">Training Visa</div>
+                            <div class="visa-card-type">Occupational Training</div>
+                        </div>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">⭐ Purpose</div>
+                        <div class="visa-card-content">Receive occupational training and skill development in Australia. Suitable for those with insufficient experience or needing skill enhancement.</div>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">✓ Requirements</div>
+                        <ul class="visa-card-list">
+                            <li>Structured Training Plan</li>
+                            <li>Functional English (low requirement)</li>
+                            <li>Health check + no criminal record</li>
+                            <li>No skill assessment needed</li>
+                            <li>Employer must be Standard Business Sponsor</li>
+                        </ul>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">💼 Work Rights</div>
+                        <div class="tag-container">
+                            <span class="content-tag highlight">Can Work (Training)</span>
+                            <span class="content-tag">Full-time</span>
+                            <span class="content-tag">Cannot Change Employer</span>
+                            <span class="content-tag">Not Count for 482</span>
+                        </div>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">🎯 Path to PR</div>
+                        <div class="visa-card-content">407 → RPL → 482 → 186 <span class="visa-no-pr">Not PR</span></div>
+                    </div>
+                </div>
+
+                <!-- 482卡片 -->
+                <div class="visa-card">
+                    <div class="visa-card-image">
+                        <img src="Gemini_Generated_Image_fw0kknfw0kknfw0k.png" alt="482 Visa - Approved Worker">
+                    </div>
+                    <div class="visa-card-header">
+                        <div class="visa-card-number visa-482">482</div>
+                        <div>
+                            <div class="visa-card-name">Temporary Skill Shortage</div>
+                            <div class="visa-card-type">TSS Visa</div>
+                        </div>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">⭐ Purpose</div>
+                        <div class="visa-card-content">Allows employers to sponsor skilled workers to fill positions where local workers are not available.</div>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">✓ Requirements</div>
+                        <div class="tag-container">
+                            <span class="content-tag highlight">MLTSSL (Glazier)</span>
+                            <span class="content-tag">PTE 50</span>
+                            <span class="content-tag">Up to 4 years</span>
+                            <span class="content-tag">2+ years experience</span>
+                            <span class="content-tag">Skills Assessment</span>
+                            <span class="content-tag">Health Check</span>
+                            <span class="content-tag">SBS Employer</span>
+                        </div>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">💼 Work Rights</div>
+                        <div class="tag-container">
+                            <span class="content-tag">Full-time Only</span>
+                            <span class="content-tag">Must Work for Sponsor</span>
+                            <span class="content-tag highlight">Partners: No Restrictions</span>
+                        </div>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">🎯 Path to PR</div>
+                        <div class="visa-card-content" style="font-weight: 600; color: #28a745;">482 (2 years) → 186 TRT <span class="visa-pr-badge">PR ✓</span></div>
+                        <div class="visa-card-content" style="margin-top: 5px; font-size: 0.65em;">After 2 years with same sponsor, age < 45, English PTE 50</div>
+                    </div>
+                </div>
+
+                <!-- 491卡片 -->
+                <div class="visa-card">
+                    <div class="visa-card-image">
+                        <img src="Gemini_Generated_Image_jmzemijmzemijmze.png" alt="491 Visa - Victory Celebration">
+                    </div>
+                    <div class="visa-card-header">
+                        <div class="visa-card-number visa-491">491</div>
+                        <div>
+                            <div class="visa-card-name">Regional Skilled Work</div>
+                            <div class="visa-card-type">State-Sponsored</div>
+                        </div>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">⭐ Purpose</div>
+                        <div class="visa-card-content">Attract skilled workers to regional areas. State-sponsored, not employer-sponsored.</div>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">✓ Requirements</div>
+                        <div class="tag-container">
+                            <span class="content-tag">Skill Assessment</span>
+                            <span class="content-tag">State List</span>
+                            <span class="content-tag">PTE 50</span>
+                            <span class="content-tag">Points 65-70</span>
+                            <span class="content-tag">State Invitation</span>
+                            <span class="content-tag highlight">Spouse: No Assessment</span>
+                        </div>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">💼 Work Rights</div>
+                        <div class="tag-container">
+                            <span class="content-tag">Regional Only</span>
+                            <span class="content-tag">Full/Part-time/Self-employed</span>
+                            <span class="content-tag highlight">No Employer Sponsor</span>
+                            <span class="content-tag">$53,900/year</span>
+                        </div>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">🎯 Path to PR</div>
+                        <div class="visa-card-content" style="font-weight: 600; color: #28a745;">491 (3 years) → 191 <span class="visa-pr-badge">PR ✓</span></div>
+                        <div class="visa-card-content" style="margin-top: 5px; font-size: 0.65em;">Must work/live in regional area, income $53,900/year for 3 years</div>
+                    </div>
+                </div>
+
+                <!-- 186卡片 -->
+                <div class="visa-card">
+                    <div class="visa-card-image">
+                        <img src="Gemini_Generated_Image_kia0wwkia0wwkia0.png" alt="186 PR - Application Processing">
+                    </div>
+                    <div class="visa-card-header">
+                        <div class="visa-card-number visa-186">186</div>
+                        <div>
+                            <div class="visa-card-name">Employer Nomination</div>
+                            <div class="visa-card-type">Direct PR Path</div>
+                        </div>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">⭐ Purpose</div>
+                        <div class="visa-card-content">Direct permanent residency through employer sponsorship. Two streams: TRT (from 482) or DE (Direct Entry).</div>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">📋 Streams</div>
+                        <div class="tag-container">
+                            <span class="content-tag highlight">TRT: 482 → 2 years</span>
+                            <span class="content-tag">DE: Assessment + 3 years</span>
+                        </div>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">✓ Requirements (TRT)</div>
+                        <div class="tag-container">
+                            <span class="content-tag">Age < 45</span>
+                            <span class="content-tag">PTE 50</span>
+                            <span class="content-tag highlight">482: 2 years</span>
+                            <span class="content-tag">Same Occupation</span>
+                            <span class="content-tag">Stable Employer</span>
+                        </div>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">💼 Work Rights</div>
+                        <div class="tag-container">
+                            <span class="content-tag">Continue Working</span>
+                            <span class="content-tag highlight">No Restrictions (PR)</span>
+                            <span class="content-tag">No Hard Requirement</span>
+                        </div>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">🎯 Path to PR</div>
+                        <div class="visa-card-content" style="font-weight: 600; color: #28a745;">482 (2 years) → 186 TRT <span class="visa-pr-badge">PR ✓</span></div>
+                        <div class="visa-card-content" style="margin-top: 5px; font-size: 0.65em;">Medicare, sponsor family, 5-year travel, pathway to citizenship</div>
+                    </div>
+                </div>
+
+                <!-- 191卡片 -->
+                <div class="visa-card">
+                    <div class="visa-card-image">
+                        <img src="Gemini_Generated_Image_v4ohgpv4ohgpv4oh.png" alt="191 PR - Family Home">
+                    </div>
+                    <div class="visa-card-header">
+                        <div class="visa-card-number visa-191">191</div>
+                        <div>
+                            <div class="visa-card-name">Skilled Regional PR</div>
+                            <div class="visa-card-type">Permanent Residence</div>
+                        </div>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">⭐ Purpose</div>
+                        <div class="visa-card-content">Reward families who have lived and worked in regional areas long-term with permanent residency.</div>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">✓ Requirements</div>
+                        <div class="tag-container">
+                            <span class="content-tag highlight">491: 3 years</span>
+                            <span class="content-tag">Regional Work</span>
+                            <span class="content-tag">$53,900/year</span>
+                            <span class="content-tag">No Assessment</span>
+                            <span class="content-tag">No Age Limit</span>
+                            <span class="content-tag">No English</span>
+                        </div>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">💼 Work Rights</div>
+                        <div class="tag-container">
+                            <span class="content-tag">Regional Work Required</span>
+                            <span class="content-tag highlight">No Restrictions (PR)</span>
+                        </div>
+                    </div>
+                    <div class="visa-card-section">
+                        <div class="visa-card-section-title">🎯 Path to PR</div>
+                        <div class="visa-card-content">Permanent Resident <span class="visa-pr-badge">PR ✓</span></div>
+                        <div class="visa-card-content" style="margin-top: 5px; font-size: 0.65em;">Same PR rights as 186, pathway to citizenship</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    
+
+    <script>
+        // Toggle Details Box
+        function toggleDetails(id) {
+            const box = document.getElementById(id);
+            if (box.classList.contains('open')) {
+                box.classList.remove('open');
+            } else {
+                document.querySelectorAll('.req-box').forEach(el => el.classList.remove('open'));
+                box.classList.add('open');
+            }
+        }
+
+        // 切换条件说明显示/隐藏 (保留旧函数以兼容)
+        function toggleRequirements(id) {
+            const box = document.getElementById(id);
+            box.classList.toggle('show');
+        }
+
+        // 添加交互效果
+        document.addEventListener('DOMContentLoaded', () => {
+            const nodes = document.querySelectorAll('.node');
+            
+            nodes.forEach(node => {
+                node.addEventListener('click', () => {
+                    nodes.forEach(n => {
+                        n.style.transform = '';
+                        n.style.zIndex = '';
+                        n.style.boxShadow = '';
+                    });
+                    node.style.transform = 'scale(1.05)';
+                    node.style.zIndex = '10';
+                    node.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.5)';
+                });
+            });
+
+            // 点击482节点时自动显示条件
+            document.getElementById('node-482').addEventListener('click', () => {
+                const reqBox = document.getElementById('req-482');
+                if (!reqBox.classList.contains('show')) {
+                    reqBox.classList.add('show');
+                }
+            });
+
+            // 点击186节点时自动显示条件
+            document.getElementById('node-186').addEventListener('click', () => {
+                const reqBox = document.getElementById('req-186');
+                if (!reqBox.classList.contains('show')) {
+                    reqBox.classList.add('show');
+                }
+            });
+
+            // 点击407节点时自动显示条件
+            const node407 = document.getElementById('node-407');
+            if (node407) {
+                node407.addEventListener('click', () => {
+                    const reqBox = document.getElementById('req-407');
+                    if (!reqBox.classList.contains('show')) {
+                        reqBox.classList.add('show');
+                    }
+                });
+            }
+
+            // 点击491节点时自动显示条件
+            const node491 = document.getElementById('node-491');
+            if (node491) {
+                node491.addEventListener('click', () => {
+                    const reqBox = document.getElementById('req-491');
+                    if (!reqBox.classList.contains('show')) {
+                        reqBox.classList.add('show');
+                    }
+                });
+            }
+
+            // 点击191节点时自动显示条件
+            const node191 = document.getElementById('node-191');
+            if (node191) {
+                node191.addEventListener('click', () => {
+                    const reqBox = document.getElementById('req-191');
+                    if (!reqBox.classList.contains('show')) {
+                        reqBox.classList.add('show');
+                    }
+                });
+            }
+
+            // ESC键清除高亮
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    nodes.forEach(node => {
+                        node.style.transform = '';
+                        node.style.zIndex = '';
+                        node.style.boxShadow = '';
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
